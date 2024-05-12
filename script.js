@@ -1,12 +1,9 @@
-const savedPos = localStorage.getItem("mtk").split(",");
-const title = "Mike's Toolkit";
-const template = `
+const MikesTitle = "Mike's Toolkit";
+const MikesToolkitWindowHTML = `
 <style>
 #mikes-toolkit {
-  left: ${savedPos[0] || "200px"};
-  top: ${savedPos[1] || "20px"};
   position: fixed;
-  background-color: #C0C0C0;
+  background: #C0C0C0;
   user-select: none;
   border: 1px solid #000000;
   box-shadow: 10px 10px #000000;
@@ -21,72 +18,44 @@ const template = `
   padding: 5px 10px;
 }
 
+.mtk-content {
+  padding: 5px 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+}
+
 .mtk-button {
-  display: inline-block;
-  background-color: #C0C0C0;
+  background: #C0C0C0;
   border: 2px outset grey;
   padding: 5px 10px;
   text-align: center;
-  cursor: pointer;
 }
 
-.mtk-content {
-  padding: 5px 10px;
-}
-
-.mtk-button:hover {
-  background-color: #C5C5C5;
-}
-
-.mtk-button:active {
-  border-style: inset;
-}
+.mtk-button:hover { background-color: #C5C5C5; }
+.mtk-button:active { border-style: inset; }
 </style>
 
 <div id="mikes-toolkit">
-  <div class="mtk-title">${title}</div>
-  <div class="mtk-content">
-    <button class="mtk-button" title="Scroll to Top">⬆️</button>
-    <div class="mtk-button">Down</div>
-    <input type="text" placeholder="Search...">
-    <label>Sup</label>
-    <select>
-      <option value="Arial">Arial</option>
-      <option value="Verdana">Verdana</option>
-      <option value="Helvetica">Helvetica</option>
-      <option value="Times New Roman">Times New Roman</option>
-      <option value="Courier New">Courier New</option>
-      <option value="Georgia">Georgia</option>
-      <option value="Palatino">Palatino</option>
-      <option value="Garamond">Garamond</option>
-      <option value="Bookman">Bookman</option>
-      <option value="Avant Garde">Avant Garde</option>
-    </select>
-  </div>
+  <div class="mtk-title">${MikesTitle}</div>
+  <div class="mtk-content"></div>
 </div>
 `;
 
 function createMikesToolkitWindow(components) {
-  for (const [key, value] of Object.entries(components)) {
-    value.
-  }
-  // /{ button, html, func }
-  if (button) {
-    html = `<button>${button}</button>`;
-  }
-
-  document.body.insertAdjacentHTML("afterbegin", template);
+  document.body.insertAdjacentHTML("afterend", MikesToolkitWindowHTML);
   const div = document.querySelector("#mikes-toolkit");
 
-  console.log(button);
-  div.insertAdjacentHTML("beforeend", html);
-  //func(div.lastChild);
+  const restorePos = (localStorage.getItem("mtk") || ",").split(",");
+  div.style.left = restorePos[0] || "300px";
+  div.style.top = restorePos[1] || "30px";
 
   let x = 0,
     y = 0,
     mousedown = false;
 
   div.onmousedown = (e) => {
+    if (e.target.value) return;
     mousedown = true;
     x = div.offsetLeft - e.clientX;
     y = div.offsetTop - e.clientY;
@@ -103,14 +72,42 @@ function createMikesToolkitWindow(components) {
     mousedown = false;
     localStorage.setItem("mtk", div.style.left + "," + div.style.top);
   };
+
+  for (let [, { label, text, button, html, func }] of Object.entries(
+    components,
+  )) {
+    if (label) html = `<label>${label}</label>`;
+    if (button) html = `<button class="mtk-button">${button}</button>`;
+    if (text) html = `<input type="text" value="${text}"></input>`;
+
+    const el = div.lastElementChild;
+    el.insertAdjacentHTML("beforeend", html);
+    if (func) func(el.lastElementChild);
+  }
 }
 
 createMikesToolkitWindow({
-  scrollToTop: {
+  button1: {
     button: "Scroll to Top",
     func: (e) => {
-      //window.scrollTo(0, 0);
-      console.log(e);
+      e.onclick = () => {
+        window.scrollTo(0, 0);
+      };
     },
   },
+  button2: {
+    text: "Scroll to Top",
+    func: (e) => {
+      e.onchange = function () {};
+    },
+  },
+  button6: {
+    html: `<input type="number"></input>`,
+    func: (e) => {},
+  },
 });
+
+let newValue = searchbox.value.replace(
+  new RegExp(`\\s?${insert.split(":")[0]}:.*?(\\s|$)`),
+  "",
+);
