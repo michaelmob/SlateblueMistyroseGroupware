@@ -25,3 +25,6 @@ Because this template uses Vite to build your code, you can add install and use 
 ## Learn More
 
 Check out [the vite docs](https://vitejs.dev) to learn more about configuring a frontend application.
+
+## Minify
+https://github.com/wilsonzlin/minify-html/releases/tag/v0.15.0

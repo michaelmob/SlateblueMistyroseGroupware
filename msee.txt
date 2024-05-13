@@ -1,0 +1,10 @@
+// ==UserScript==
+// @name        Mike's Search Engine Enhancements
+// @namespace   Violentmonkey Scripts
+// @match       https://www.google.com/*
+// @match       https://search.brave.com/*
+// @grant       none
+// @version     1.0
+// @author      https://github.com/michaelmob
+// @description 5/10/2024, 10:58:58 PM
+// ==/UserScript==

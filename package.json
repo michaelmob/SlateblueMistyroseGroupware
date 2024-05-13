@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "msee-userscript": "mkdir -p dist; awk 1 msee.txt mtk.js msee.js > dist/msee.user.js"
   },
   "dependencies": {
     "vite": "^5.0.12"

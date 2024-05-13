@@ -1,3 +1,7 @@
+/**
+ * MTK 0.1
+ * Mike's Toolkit for Quick UI
+ */
 function createMikesToolkitWindow(title, components) {
   const html = `
 <style>
@@ -49,7 +53,7 @@ function createMikesToolkitWindow(title, components) {
   <header>${title}</header>
   <main></main>
 </div>
-  `;
+`;
   document.body.insertAdjacentHTML("afterend", html);
 
   const div = document.querySelector("#mikes-toolkit");
@@ -82,7 +86,7 @@ function createMikesToolkitWindow(title, components) {
 
   for (let [, v] of Object.entries(components)) {
     if (v.button) v.html = `<button>${v.button}</button>`;
-    if (v.text) v.html = `<input type="text" value="${v.text}"></input>`;
+    if (v.text) v.html = `<input type="text" value="${v.text}" />`;
     if (v.label && !v.checkbox) v.html = `<label>${v.label}</label>`;
     if (v.checkbox)
       v.html = `<label for="${v.checkbox}">${v.label}</label><input type="checkbox" id="${v.checkbox}" />`;
