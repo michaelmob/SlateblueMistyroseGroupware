@@ -77,6 +77,13 @@ function createMikesToolkitWindow(title, components) {
     y = div.offsetTop - e.clientY;
   };
 
+  div.firstElementChild.onwheel = (e) => {
+    e.preventDefault();
+    const incr = e.deltaY > 0 ? -0.2 : 0.2;
+    const opacity = parseFloat(div.style.opacity) || 1;
+    div.style.opacity = Math.min(1, Math.max(0.2, opacity + incr));
+  };
+
   document.onmousemove = (e) => {
     if (!mousedown) return;
     e.preventDefault();
