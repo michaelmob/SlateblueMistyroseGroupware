@@ -4,7 +4,7 @@
 // @match       https://www.google.com/*
 // @match       https://search.brave.com/*
 // @grant       none
-// @version     1.0
+// @version     0.2
 // @author      https://github.com/michaelmob
 // @description 5/10/2024, 10:58:58 PM
 // @updateURL   https://github.com/michaelmob/SlateblueMistyroseGroupware/raw/main/dist/msee.user.js

@@ -4,18 +4,20 @@
 // @match       https://www.google.com/*
 // @match       https://search.brave.com/*
 // @grant       none
-// @version     1.0
+// @version     0.2
 // @author      https://github.com/michaelmob
 // @description 5/10/2024, 10:58:58 PM
+// @updateURL   https://github.com/michaelmob/SlateblueMistyroseGroupware/raw/main/dist/msee.user.js
 // ==/UserScript==
 /**
- * MTK 0.1
+ * MTK 0.2
  * Mike's Toolkit for Quick UI
  */
 function createMikesToolkitWindow(title, components) {
   const html = `
 <style>
 #mikes-toolkit {
+  z-index: 99999;
   position: fixed;
   background: #C0C0C0;
   color: #000;
@@ -25,7 +27,7 @@ function createMikesToolkitWindow(title, components) {
   font-family: 'MS Sans Serif', sans-serif;
   font-size: 12px;
   cursor: default;
-  z-index: 99999;
+  min-width: 125px;
 }
 
 #mikes-toolkit header {
@@ -38,13 +40,18 @@ function createMikesToolkitWindow(title, components) {
   all: unset;
   padding: 5px 10px;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   gap: 5px;
 }
 
-#mikes-toolkit label {
+#mikes-toolkit checkbox {
   all: unset;
+}
+
+#mikes-toolkit label {
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 
@@ -54,9 +61,9 @@ function createMikesToolkitWindow(title, components) {
   padding: 5px 10px;
   text-align: center;
 }
+
 #mikes-toolkit button:hover { background-color: #C5C5C5; }
 #mikes-toolkit button:active { border-style: inset; }
-
 </style>
 
 <div id="mikes-toolkit">
@@ -80,11 +87,18 @@ function createMikesToolkitWindow(title, components) {
       localStorage.setItem("mtk-pos", div.style.left + "," + div.style.top);
   };
 
-  div.onmousedown = (e) => {
+  div.firstElementChild.onmousedown = (e) => {
     if (e.target.value) return;
     mousedown = true;
     x = div.offsetLeft - e.clientX;
     y = div.offsetTop - e.clientY;
+  };
+
+  div.firstElementChild.onwheel = (e) => {
+    e.preventDefault();
+    const incr = e.deltaY > 0 ? -0.2 : 0.2;
+    const opacity = parseFloat(div.style.opacity) || 1;
+    div.style.opacity = Math.min(1, Math.max(0.2, opacity + incr));
   };
 
   document.onmousemove = (e) => {
@@ -99,7 +113,7 @@ function createMikesToolkitWindow(title, components) {
     if (v.text) v.html = `<input type="text" value="${v.text}" />`;
     if (v.label && !v.checkbox) v.html = `<label>${v.label}</label>`;
     if (v.checkbox)
-      v.html = `<label for="${v.checkbox}">${v.label}</label><input type="checkbox" id="${v.checkbox}" />`;
+      v.html = `<label for="${v.checkbox}">${v.label} <input type="checkbox" id="${v.checkbox}" /></label>`;
 
     const el = div.lastElementChild;
     el.insertAdjacentHTML("beforeend", v.html);
@@ -150,7 +164,6 @@ function toggleSubstr(el, insert, on, off) {
   };
 }
 
-// Components
 const components = {};
 
 // Brave Search Bangs

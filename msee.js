@@ -42,7 +42,6 @@ function toggleSubstr(el, insert, on, off) {
   };
 }
 
-// Components
 const components = {};
 
 // Brave Search Bangs
@@ -98,7 +97,7 @@ components["pdf"] = {
 // Misc.
 components["autosubmit"] = {
   checkbox: "autosubmit",
-  label: "&nbsp;Submit",
+  label: "Submit",
   func: (el) => {
     el.checked = true;
   },
