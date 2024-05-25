@@ -14,8 +14,12 @@
  * Mike's Toolkit for Quick UI
  */
 function createMikesToolkitWindow(title, components) {
+  const pos = (localStorage.getItem("mtk-pos") || "5,10").split(",");
+  const opacity = localStorage.getItem("mtk-o") || "0.8";
   const html = `
 <style>
+@keyframes fade-in { 0% { opacity: 0 } 100% { opacity: ${opacity} } }
+
 #mikes-toolkit {
   z-index: 99999;
   position: fixed;
@@ -28,6 +32,10 @@ function createMikesToolkitWindow(title, components) {
   font-size: 12px;
   cursor: default;
   min-width: 125px;
+  animation: fade-in 0.5s;
+  opacity: ${opacity};
+  left: ${pos[0] || "5"}%;
+  top: ${pos[1] || "15"}%;
 }
 
 #mikes-toolkit header {
@@ -72,33 +80,30 @@ function createMikesToolkitWindow(title, components) {
 </div>
 `;
   document.body.insertAdjacentHTML("afterend", html);
-
   const div = document.querySelector("#mikes-toolkit");
-  const pos = localStorage.getItem("mtk-pos") || "300px,30px";
-  [div.style.left, div.style.top] = pos.split(",");
 
-  let x = 0,
-    y = 0,
-    mousedown = false;
-
+  let [x, y, mousedown] = [0, 0, false];
   div.onmouseup = () => {
     mousedown = false;
-    if (div.style.left && div.style.top)
-      localStorage.setItem("mtk-pos", div.style.left + "," + div.style.top);
+    const wx = (parseInt(div.style.left) / window.innerWidth) * 100;
+    const wy = (parseInt(div.style.top) / window.innerHeight) * 100;
+    localStorage.setItem("mtk-pos", `${wx},${wy}`);
   };
 
-  div.firstElementChild.onmousedown = (e) => {
+  const titleBar = div.firstElementChild;
+  titleBar.onmousedown = (e) => {
     if (e.target.value) return;
     mousedown = true;
     x = div.offsetLeft - e.clientX;
     y = div.offsetTop - e.clientY;
   };
 
-  div.firstElementChild.onwheel = (e) => {
+  titleBar.onwheel = (e) => {
     e.preventDefault();
     const incr = e.deltaY > 0 ? -0.2 : 0.2;
     const opacity = parseFloat(div.style.opacity) || 1;
     div.style.opacity = Math.min(1, Math.max(0.2, opacity + incr));
+    localStorage.setItem("mtk-o", div.style.opacity);
   };
 
   document.onmousemove = (e) => {
@@ -219,9 +224,9 @@ components["pdf"] = {
 // Misc.
 components["autosubmit"] = {
   checkbox: "autosubmit",
-  label: "&nbsp;Submit",
+  label: "Submit",
   func: (el) => {
-    el.checked = true;
+    el.lastElementChild.checked = true;
   },
 };
 

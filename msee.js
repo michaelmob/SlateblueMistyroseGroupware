@@ -99,7 +99,7 @@ components["autosubmit"] = {
   checkbox: "autosubmit",
   label: "Submit",
   func: (el) => {
-    el.checked = true;
+    el.lastElementChild.checked = true;
   },
 };
 
